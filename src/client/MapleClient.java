@@ -80,6 +80,7 @@ import tools.DatabaseConnection;
 import tools.FilePrinter;
 import tools.HexTool;
 import tools.MapleAESOFB;
+import tools.MapleLogger;
 import tools.MaplePacketCreator;
 
 public class MapleClient {
@@ -1041,38 +1042,38 @@ public class MapleClient {
 		return gmlevel;
 	}
         
-        public boolean getFly(){
-            return flyActive;
-        }
+    public boolean getFly(){
+        return flyActive;
+    }
+    
+    public void reloadFly(){
+        PreparedStatement ps;
         
-        public void reloadFly(){
-            PreparedStatement ps;
+        try{
+            Connection con = DatabaseConnection.getConnection();
+            ps = con.prepareStatement("SELECT `fly` FROM accounts WHERE `id` = ?;");
+            ps.setInt(1, accId);
             
-            try{
-                Connection con = DatabaseConnection.getConnection();
-                ps = con.prepareStatement("SELECT `fly` FROM accounts WHERE `id` = ?;");
-                ps.setInt(1, accId);
-                
-                ResultSet rs = ps.executeQuery();
-                while(rs.next()){
-                    this.flyActive = (rs.getShort("fly") == (short)1);
-                }
-                
-                ps.close();
-                rs.close();
-                con.close();
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                this.flyActive = (rs.getShort("fly") == (short)1);
             }
-            catch(SQLException e){
-                e.printStackTrace();
-            }
+            
+            ps.close();
+            rs.close();
+            con.close();
         }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
         
-        public void setGMLevel(int level) {
+    public void setGMLevel(int level) {
 		gmlevel = level;
 	}
 
 	public void setScriptEngine(String name, ScriptEngine e) {
-                engines.put(name, e);
+        engines.put(name, e);
 	}
 
 	public ScriptEngine getScriptEngine(String name) {
@@ -1080,7 +1081,7 @@ public class MapleClient {
 	}
 
 	public void removeScriptEngine(String name) {
-                engines.remove(name);
+        engines.remove(name);
 	}
 
 	public ScheduledFuture<?> getIdleTask() {
@@ -1105,7 +1106,7 @@ public class MapleClient {
 			return true;
 		}
 		try {
-                        Connection con = DatabaseConnection.getConnection();
+            Connection con = DatabaseConnection.getConnection();
 			PreparedStatement ps = con.prepareStatement("SELECT `tos` FROM accounts WHERE id = ?");
 			ps.setInt(1, accId);
 			ResultSet rs = ps.executeQuery();
@@ -1121,9 +1122,9 @@ public class MapleClient {
 			ps.setInt(1, accId);
 			ps.executeUpdate();
 			ps.close();
-                        con.close();
+            con.close();
 		} catch (SQLException e) {
-                    e.printStackTrace();
+            e.printStackTrace();
 		}
 		return disconnectForBeingAFaggot;
 	}
@@ -1131,7 +1132,7 @@ public class MapleClient {
 	public int getVotePoints(){
 		int points = 0;
 		try {
-                        Connection con = DatabaseConnection.getConnection();
+            Connection con = DatabaseConnection.getConnection();
 			PreparedStatement ps = con.prepareStatement("SELECT `votes` FROM accounts WHERE id = ?");
 			ps.setInt(1, accId);
 			ResultSet rs = ps.executeQuery();
@@ -1142,9 +1143,9 @@ public class MapleClient {
 			ps.close();
 			rs.close();
 
-                        con.close();
+            con.close();
 		} catch (SQLException e) {
-                    e.printStackTrace();
+            e.printStackTrace();
 		}
 		votePoints = points;
 		return votePoints;
@@ -1174,7 +1175,7 @@ public class MapleClient {
 				ps.executeUpdate();
 			}
                         
-                        con.close();
+            con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -1214,7 +1215,7 @@ public class MapleClient {
 		if (characterSlots < 15) {
 			Connection con = null;
 			try {
-                                con = DatabaseConnection.getConnection();
+                con = DatabaseConnection.getConnection();
                                 
 				try (PreparedStatement ps = con.prepareStatement("UPDATE accounts SET characterslots = ? WHERE id = ?")) {
 					ps.setInt(1, this.characterSlots += 1);
@@ -1222,9 +1223,9 @@ public class MapleClient {
 					ps.executeUpdate();
 				}
                                 
-                                con.close();
+                con.close();
 			} catch (SQLException e) {
-                                e.printStackTrace();
+                e.printStackTrace();
 			}
 			return true;
 		}
@@ -1236,7 +1237,7 @@ public class MapleClient {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-                        con = DatabaseConnection.getConnection();
+            con = DatabaseConnection.getConnection();
 			ps = con.prepareStatement("SELECT `greason` FROM `accounts` WHERE id = ?");
 			ps.setInt(1, accId);
 			rs = ps.executeQuery();
@@ -1303,7 +1304,10 @@ public class MapleClient {
                 }
 	}
         
-	public synchronized void announce(final byte[] packet) {//MINA CORE IS A FUCKING BITCH AND I HATE IT <3
+	public synchronized void announce(final byte[] packet) {
+                if (ServerConstants.USE_DEBUG_SHOW_SEND_PACKET){
+                    MapleLogger.logSend(this, packet);
+                }
 		session.write(packet);
 	}
 
