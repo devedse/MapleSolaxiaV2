@@ -2233,7 +2233,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             
             final List<Pair<MapleDisease, Integer>> debuff = Collections.singletonList(new Pair<>(disease, Integer.valueOf(skill.getX())));
             client.announce(MaplePacketCreator.giveDebuff(debuff, skill));
-            map.broadcastMessage(this, MaplePacketCreator.giveForeignDebuff(id, debuff, skill), false);
+            if (disease == MapleDisease.SLOW)
+                map.broadcastMessage(this, MaplePacketCreator.giveForeignSlowDebuff(id, debuff, skill), false);
+            else
+                map.broadcastMessage(this, MaplePacketCreator.giveForeignDebuff(id, debuff, skill), false);
         }
     }
 
@@ -2241,7 +2244,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         if (hasDisease(debuff)) {
             long mask = debuff.getValue();
             announce(MaplePacketCreator.cancelDebuff(mask));
-            map.broadcastMessage(this, MaplePacketCreator.cancelForeignDebuff(id, mask), false);
+            if (debuff == MapleDisease.SLOW)
+                map.broadcastMessage(this, MaplePacketCreator.cancelForeignSlowDebuff(id), false);
+            else
+                map.broadcastMessage(this, MaplePacketCreator.cancelForeignDebuff(id, mask), false);
 
             chrLock.lock();
             try {
@@ -2500,7 +2506,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         if(gain < 0) gain = 0;
         if(party < 0) party = 0;
 
-        long equip = (long)Math.exp(Math.log(gain) - Math.log(10) + Math.log(pendantExp));
+        long equip = Math.round(Math.exp(Math.log(gain) - Math.log(10) + Math.log(pendantExp)));
         
         long total = gain + equip + party;
         gainExpInternal(
@@ -2523,7 +2529,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private void gainExpInternal(long gain, long equip, long party, boolean show, boolean inChat, boolean white) {
         int requiredToLevel;
         int expEarned;
-        Item apReset = new Item(5050000, (short)0, (short)1 );
 
         // Loop through leveling
         while(true) {
@@ -2560,14 +2565,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             //Handle LevelUp
             if(exp.get() >= ExpTable.getExpNeededForLevel(level)) {
                 levelUp(true);
-                
-                // Gain one AP Reset every level
-                if(MapleInventoryManipulator.checkSpace(client, 5050000, 1, "")){
-                    MapleInventoryManipulator.addFromDrop(client, apReset.copy());
-                }
-                else{
-                    client.getPlayer().dropMessage(1, "Your inventory is full. Cannot obtain AP Reset.");
-                }
             }
         }
     }
