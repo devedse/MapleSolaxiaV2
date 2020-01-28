@@ -98,6 +98,7 @@ import client.inventory.Equip;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
+import client.command.utils.PlayerRanking;
 import constants.GameConstants;
 import constants.ItemConstants;
 import constants.ServerConstants;
@@ -274,7 +275,7 @@ public class Commands {
 	static {
 		gotomaps.put("gmmap", 180000000);
 		gotomaps.put("southperry", 60000);
-		gotomaps.put("amherst", 1010000);
+		gotomaps.put("amherst", 1000000);
 		gotomaps.put("henesys", 100000000);
 		gotomaps.put("ellinia", 101000000);
 		gotomaps.put("perion", 102000000);
@@ -282,6 +283,7 @@ public class Commands {
 		gotomaps.put("lith", 104000000);
 		gotomaps.put("sleepywood", 105040300);
 		gotomaps.put("florina", 110000000);
+                gotomaps.put("nautilus", 120000000);
 		gotomaps.put("orbis", 200000000);
 		gotomaps.put("happy", 209000000);
 		gotomaps.put("elnath", 211000000);
@@ -290,8 +292,12 @@ public class Commands {
 		gotomaps.put("leafre", 240000000);
 		gotomaps.put("mulung", 250000000);
 		gotomaps.put("herb", 251000000);
+                gotomaps.put("ariant", 260000000);
+                gotomaps.put("magatia", 261000000);
 		gotomaps.put("omega", 221000000);
 		gotomaps.put("korean", 222000000);
+                gotomaps.put("singapore", 540000000);
+                gotomaps.put("themepark", 551000200);
 		gotomaps.put("nlc", 600000000);
 		gotomaps.put("excavation", 990000000);
 		gotomaps.put("pianus", 230040420);
@@ -303,6 +309,7 @@ public class Commands {
 		gotomaps.put("balrog", 105090900);
 		gotomaps.put("zakum", 211042300);
 		gotomaps.put("papu", 220080001);
+                gotomaps.put("shrine", 800000000);
 		gotomaps.put("showa", 801000000);
 		gotomaps.put("guild", 200000301);
 		gotomaps.put("shrine", 800000000);
@@ -356,9 +363,9 @@ public class Commands {
 			player.yellowMessage("Buraisx - Developer");
 			player.yellowMessage("Rayden - Developer");
 			player.yellowMessage("Dispenser - Developer");
-                        player.yellowMessage("MapleSolaxiaV2 Staff");
-                        player.yellowMessage("Ronan - Freelance Developer");
-                        player.yellowMessage("Vcoc - Freelance Developer");
+			player.yellowMessage("MapleSolaxiaV2 Staff");
+			player.yellowMessage("Ronan - Freelance Developer");
+			player.yellowMessage("Vcoc - Freelance Developer");
 			break;
                     
 		case "lastrestart":
@@ -643,35 +650,7 @@ public class Commands {
 			break;
                     
 		case "ranks":
-			PreparedStatement ps = null;
-			ResultSet rs = null;
-                        Connection con = null;
-			try {
-                                con = DatabaseConnection.getConnection();
-				ps = con.prepareStatement("SELECT `characters`.`name`, `characters`.`level` FROM `characters` LEFT JOIN accounts ON accounts.id = characters.accountid WHERE `characters`.`gm` = '0' AND `accounts`.`banned` = '0' ORDER BY level DESC, exp DESC LIMIT 50");
-				rs = ps.executeQuery();
-				
-				player.announce(MaplePacketCreator.showPlayerRanks(9010000, rs));
-				ps.close();
-				rs.close();
-                                con.close();
-			} catch(SQLException ex) {
-				ex.printStackTrace();
-			} finally {
-				try {
-					if(ps != null && !ps.isClosed()) {
-						ps.close();
-					}
-					if(rs != null && !rs.isClosed()) {
-						rs.close();
-					}
-                                        if(con != null && !con.isClosed()) {
-						con.close();
-					}
-				} catch (SQLException e) {
-                                        e.printStackTrace();
-				}
-			}
+			player.announce(MaplePacketCreator.showPlayerRanks(9010000, PlayerRanking.getInstance().getRanking()));
 			break;
                             
                 case "apreset":
@@ -1141,18 +1120,33 @@ public class Commands {
                 case "item":
                 case "drop":
                         if (sub.length < 2){
-				player.yellowMessage("Syntax: !item <itemid> <quantity>");
+				player.yellowMessage("Syntax: !item <itemid> <quantity> <timelimit (minutes)>");
 				break;
 			}
-                        
-			int itemId = Integer.parseInt(sub[1]);
+
+                        int itemId = -1;
+                        try {
+                            itemId = Integer.parseInt(sub[1]);
+                        }
+                        catch (NumberFormatException nfe) {
+                            player.yellowMessage("Invalid item ID.");
+                            break;
+                        }
                         if(MapleItemInformationProvider.getInstance().getName(itemId) == null) {
                                 player.yellowMessage("Item id '" + sub[1] + "' does not exist.");
                                 break;
                         }
                         
 			short quantity = 1;
-                        if(sub.length >= 3) quantity = Short.parseShort(sub[2]);
+                        long timeLimit = -1;
+                        try {
+                            if(sub.length >= 3) quantity = Short.parseShort(sub[2]);
+                            if(sub.length >= 4) timeLimit = Integer.parseInt(sub[3]) * 60 * 1000;
+                        }
+                        catch (NumberFormatException e){
+                            player.yellowMessage("Invalid quantity or time input.");
+                            break;
+                        }
 			
 			if (sub[0].equals("item")) {
 				int petid = -1;
@@ -1166,7 +1160,7 @@ public class Commands {
                                     flag |= ItemConstants.UNTRADEABLE;
                                 }
                         
-                                MapleInventoryManipulator.addById(c, itemId, quantity, player.getName(), petid, flag, -1);
+                                MapleInventoryManipulator.addById(c, itemId, quantity, player.getName(), petid, flag, timeLimit == -1 ? -1 : System.currentTimeMillis() + timeLimit);
 			} else {
 				Item toDrop;
 				if (MapleItemInformationProvider.getInstance().getInventoryType(itemId) == MapleInventoryType.EQUIP) {
@@ -1198,7 +1192,8 @@ public class Commands {
 //                                        toDrop.setExpiration(System.currentTimeMillis() + (1000 * 60 * 60 * 4));
 //                                    }
 //                                }
-                                
+                                if (timeLimit > 0)
+                                    toDrop.setExpiration(System.currentTimeMillis() + timeLimit);
 				c.getPlayer().getMap().spawnItemDrop(c.getPlayer(), c.getPlayer(), toDrop, c.getPlayer().getPosition(), true, true);
 			}
                     break; 
@@ -1913,19 +1908,18 @@ public class Commands {
 					break;
 				}
 			}
-                    break;
+            break;
         
 		case "startevent":
 			int players = 50;
 			if(sub.length > 1)
 				players = Integer.parseInt(sub[1]);
 			
-			c.getChannelServer().setEvent(new MapleEvent(player.getMapId(), players));
+			player.getMap().startEvent(player);
 			player.dropMessage(5, "The event has been set on " + player.getMap().getMapName() + " and will allow " + players + " players to join.");
                     break;
                     
 		case "endevent":
-			c.getChannelServer().setEvent(null);
 			player.dropMessage(5, "You have ended the event. No more players may join.");
                     break;
                     

@@ -41,6 +41,7 @@ public class ServerConstants {
     public static final boolean USE_MTS = false;
     public static final boolean USE_FAMILY_SYSTEM = false;
     public static final boolean USE_DUEY = true;
+    public static final boolean USE_DUEY_INSTANT_DELIVERY = true;   //Allows packages to be received instantly after being sent
     public static final boolean USE_ITEM_SORT = true;
     public static final boolean USE_ITEM_SORT_BY_NAME = false;      //Item sorting based on name rather than id.
     public static final boolean USE_PARTY_SEARCH = false;
@@ -105,8 +106,11 @@ public class ServerConstants {
     public static final byte CHAIR_EXTRA_HEAL_MP = 42;          //Each chair extra heal proc increasing MP.
     public static final double EQUIP_LVLUP_GAIN_BASE = 0.05;   //Base multiplier for bonus stats on level up
     public static final double EQUIP_LVLUP_GAIN_BONUS = 0.05;  //Additional multiplier for bonus stats on level up
-    public static final double EQUIP_LVLUP_GAIN_ATTR_BASE = 0.20; //Bonus multiplier for attributes
-    public static final double EQUIP_LVLUP_ATTR_BONUS_MULT = 3.0;
+    public static final double EQUIP_LVLUP_GAIN_ATTR_BASE = 0.20; //Bonus multipliers for attributes
+    public static final double EQUIP_LVLUP_ATTR_BONUS_MULT = 3.0; 
+    public static final double EQUIP_LVLUP_GAIN_BONUS_LONGCOAT = 1.10; //Bonus multiplier applied to level up bonus stats for overalls
+    public static final double EQUIP_LVLUP_GAIN_BONUS_CLAW_PAD = 1.1; //Bonus multiplier applied to level up bonus attack for claws
+    public static final double EQUIP_LVLUP_GAIN_BONUS_GUN_PAD = 1.2;  //Bonus multiplier applied to level up bonus attack for guns
     
     //Pet Auto-Pot Recovery Rates
     public static final double PET_AUTOHP_RATIO = 0.99;         //Will automatically consume potions until given ratio of the MaxHP/MaxMP is reached.
@@ -127,6 +131,9 @@ public class ServerConstants {
 	
     //Event End Timestamp
     public static final long EVENT_END_TIMESTAMP = 1428897600000L;
+
+    //Maximum number of times players can enter bosses
+    public static final int MAX_DAILY_BOSS_ENTRANCES = 2;
 	
     //Properties
     static {
@@ -144,7 +151,7 @@ public class ServerConstants {
 
             //java8 And Shutdownhook
             ServerConstants.JAVA_8 = System.getProperty("java.version").startsWith("1.8");
-            System.err.println("Using JAVA 8: " + ServerConstants.JAVA_8);
+            System.out.println("Using JAVA 8: " + ServerConstants.JAVA_8);
             ServerConstants.SHUTDOWNHOOK = p.getProperty("SHUTDOWNHOOK").equalsIgnoreCase("true");
 
         } catch (Exception e) {
