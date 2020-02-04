@@ -29,6 +29,7 @@ public class QuestionStep extends EventStep {
 
 	public static final String ERROR_MSG = "Sorry everyone, looks like something went wrong with gathering trivia...";
 	public static final String ROUND_MSG = "Ready?";
+	public static final String ROUND_COUNT_MSG = "[ROUND %d]";
 	public static final String CORRECT_MSG = "You got it!";
 	public static final String INCORRECT_MSG = "Better luck next time!";
 
@@ -56,14 +57,16 @@ public class QuestionStep extends EventStep {
 		}
 
 		// Send questions
+		int question = 1;
 		for(Map.Entry<String, Boolean> entry : questions.entrySet()) {
 			map.startMapEffect(ROUND_MSG, MAP_EFFECT, 2 * 1000);
 			Thread.sleep(3 * 1000);
-			sendQuestion(entry.getKey());
+			sendQuestion(entry.getKey(), question);
 			Thread.sleep(QUESTION_TIMER * 1000);
 			removeClock();
 			checkAnswer(entry.getValue());
 			Thread.sleep(8 * 1000);
+			question++;
 		}
 
 		// Show Ranking
@@ -72,12 +75,13 @@ public class QuestionStep extends EventStep {
 
 	private void getProblems(int numQuestions) {
 		OkHttpClient httpClient = new OkHttpClient();
+		Response response = null;
 		Request request = new Request.Builder()
             .url(String.format(OPEN_TRIVIA_URL, numQuestions))
             .build();
 
         try {
-        	Response response = httpClient.newCall(request).execute();
+        	response = httpClient.newCall(request).execute();
         	JSONObject jsonObj = new JSONObject(response.body().string());
         	JSONArray jsonArr = jsonObj.getJSONArray("results");
         	for(int i = 0; i < jsonArr.length(); i++) {
@@ -85,6 +89,11 @@ public class QuestionStep extends EventStep {
         	}
         } catch(IOException e) {
         	e.printStackTrace();
+        } finally {
+        	if(response != null) {
+        		response.close();
+        	}
+        	httpClient.dispatcher().executorService().shutdown();
         }
 	}
 
@@ -94,8 +103,9 @@ public class QuestionStep extends EventStep {
 		questions.put(question, ans);
 	}
 
-	private void sendQuestion(String question) {
+	private void sendQuestion(String question, int questionNum) {
 		map.startMapEffect(question, MAP_EFFECT, (QUESTION_TIMER - 1) * 1000);
+		map.broadcastMessage(MaplePacketCreator.serverNotice(6, String.format(ROUND_COUNT_MSG, questionNum)));
 		map.broadcastMessage(MaplePacketCreator.serverNotice(6, question));
 		map.broadcastMessage(MaplePacketCreator.getClock(QUESTION_TIMER));
 	}
@@ -110,13 +120,13 @@ public class QuestionStep extends EventStep {
 			if (chr != null) {
 				if (isCorrectAnswer(chr, answer)) {
 					GiveExpOnCorrectAnswer(chr);
-					map.startMapEffect(CORRECT_MSG, MAP_EFFECT, 7 * 1000);
-					map.broadcastMessage(MaplePacketCreator.showEffect("quest/party/clear"));
-        			map.broadcastMessage(MaplePacketCreator.playSound("Party1/Clear"));
+					chr.startMapEffect(CORRECT_MSG, MAP_EFFECT, 7 * 1000);
+					chr.getClient().announce(MaplePacketCreator.showEffect("quest/party/clear"));
+					chr.getClient().announce(MaplePacketCreator.playSound("Party1/Clear"));
         			results.put(chr, results.getOrDefault(chr, 0) + 1);
 				}
 				else {
-					map.startMapEffect(INCORRECT_MSG, MAP_EFFECT, 7 * 1000);
+					chr.startMapEffect(INCORRECT_MSG, MAP_EFFECT, 7 * 1000);
 					chr.getClient().announce(MaplePacketCreator.showEffect("quest/party/wrong_kor"));
         			chr.getClient().announce(MaplePacketCreator.playSound("Party1/Failed"));
         			results.put(chr, results.getOrDefault(chr, 0));

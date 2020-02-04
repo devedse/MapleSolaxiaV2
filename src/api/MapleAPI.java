@@ -3,7 +3,7 @@ package api;
 import io.javalin.Javalin;
 import net.server.Server;
 
-import api.controllers.ServerCommunityController;
+import api.controllers.*;
 
 public class MapleAPI {
 
@@ -20,7 +20,12 @@ public class MapleAPI {
 	}
 
 	public void registerRoutes() {
+		// Get Requests
 		this.app.get("/hello", ctx -> ctx.html("Hello, Javalin!"));
 		this.app.get("/ranks", ServerCommunityController.getRanking);
+
+		// Post Requests
+		this.app.post("/duey", DueySystemController.givePackage);
+		this.app.post("/dc", ConnectionToolController.disconnectPlayer);
 	}
 }
