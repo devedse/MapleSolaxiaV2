@@ -3634,6 +3634,12 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     public int getPossibleReports() {
         return possibleReports;
     }
+    
+    public void  addQuest(final MapleQuestStatus qs){
+        synchronized(quests){
+            quests.put(qs.getQuestID(), qs);
+        }
+    }
 
     public final byte getQuestStatus(final int quest) {
         synchronized (quests) {
@@ -6863,9 +6869,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
     
     public void updateQuest(MapleQuestStatus quest) {
-        synchronized (quests) {
-            quests.put(quest.getQuestID(), quest);
-        }
+        addQuest(quest);
         if (quest.getStatus().equals(MapleQuestStatus.Status.STARTED)) {
             announce(MaplePacketCreator.updateQuest(quest, false));
             if (quest.getQuest().getInfoNumber() > 0) {
