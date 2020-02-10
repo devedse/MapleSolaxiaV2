@@ -35,8 +35,8 @@ public class ServerConstants {
     public static final boolean USE_MAXRANGE_ECHO_OF_HERO = true;
     public static final boolean USE_MAXRANGE = true;                //Will send and receive packets from all events of a map, rather than those of only view range.
     public static final boolean USE_DEBUG = false;                   //Will enable some text prints on the client, oriented for debugging purposes.
-    public static final boolean USE_DEBUG_SHOW_RCVD_PACKET = false;  //Prints on the cmd all received packets
-    public static final boolean USE_DEBUG_SHOW_SEND_PACKET = false;  //prints on console sent packets
+    public static final boolean USE_DEBUG_SHOW_RCVD_PACKET = true;  //Prints on the cmd all received packets
+    public static final boolean USE_DEBUG_SHOW_SEND_PACKET = true;  //prints on console sent packets
     public static final boolean USE_DEBUG_SHOW_INFO_EQPEXP = false; //Prints on the cmd all equip exp gain info.
     public static final boolean USE_MTS = false;
     public static final boolean USE_FAMILY_SYSTEM = false;
@@ -77,6 +77,7 @@ public class ServerConstants {
     //Some Gameplay Enhancing Configurations
     //Scroll Configuration
     public static final boolean USE_PERFECT_SCROLLING = false;   //Scrolls doesn't use slots upon failure.
+    public static final boolean USE_PERFECT_GM_SCROLL = false;   //Scrolling by GM succeeds every time
     public static final boolean USE_ENHANCED_CHSCROLL = false;   //Equips even more powerful with chaos upgrade.
     public static final boolean USE_ENHANCED_CRAFTING = false;   //Applys chaos scroll on every equip crafted.
     
@@ -134,6 +135,8 @@ public class ServerConstants {
 
     //Maximum number of times players can enter bosses
     public static final int MAX_DAILY_BOSS_ENTRANCES = 2;
+    
+    //Maker properties
 	
     //Properties
     static {

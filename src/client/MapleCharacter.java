@@ -113,6 +113,7 @@ import client.inventory.Equip;
 import client.inventory.Item;
 import client.inventory.ItemFactory;
 import client.inventory.MapleInventory;
+import client.inventory.MapleInventoryProof;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import client.inventory.MapleWeaponType;
@@ -316,6 +317,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             }
             inventory[type.ordinal()] = new MapleInventory(this, type, (byte) b);
         }
+        inventory[MapleInventoryType.CANHOLD.ordinal()] = new MapleInventoryProof(this);
         for (int i = 0; i < SavedLocationType.values().length; i++) {
             savedLocations[i] = null;
         }

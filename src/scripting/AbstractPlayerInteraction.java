@@ -57,11 +57,13 @@ import client.SkillFactory;
 import client.inventory.Equip;
 import client.inventory.Item;
 import client.inventory.MapleInventory;
+import client.inventory.MapleInventoryProof;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import client.inventory.ModifyInventory;
 import constants.ItemConstants;
 import constants.ServerConstants;
+import java.util.ArrayList;
 import server.life.MapleNPC;
 import tools.Pair;
 import tools.NashornUtil;
@@ -178,7 +180,11 @@ public class AbstractPlayerInteraction {
     public EventInstanceManager getEventInstance() {
         return getPlayer().getEventInstance();
     }
-
+    
+    public MapleInventory getInventory(int type) {
+        return getPlayer().getInventory(MapleInventoryType.getByType((byte) type));
+    }
+    
     public MapleInventory getInventory(MapleInventoryType type) {
         return getPlayer().getInventory(type);
     }
@@ -225,6 +231,68 @@ public class AbstractPlayerInteraction {
         }
 
         return MapleInventory.checkSpots(c.getPlayer(), addedItems);
+    }
+    
+    private List<Pair<Item, MapleInventoryType>> prepareProofInventoryItems(List<Pair<Integer, Integer>> items) {
+        List<Pair<Item, MapleInventoryType>> addedItems = new LinkedList<>();
+        for(Pair<Integer, Integer> p : items) {
+            Item it = new Item(p.getLeft(), (short) 0, p.getRight().shortValue());
+            addedItems.add(new Pair<>(it, MapleInventoryType.CANHOLD));
+        }
+
+        return addedItems;
+    }
+    
+    private List<List<Pair<Integer, Integer>>> prepareInventoryItemList(List<Integer> itemids, List<Integer> quantity) {
+        int size = Math.min(itemids.size(), quantity.size());
+
+        List<List<Pair<Integer, Integer>>> invList = new ArrayList<>(6);
+        for(int i = MapleInventoryType.UNDEFINED.getType(); i < MapleInventoryType.CASH.getType(); i++) {
+            invList.add(new LinkedList<Pair<Integer, Integer>>());
+        }
+
+        for(int i = 0; i < size; i++) {
+            int itemid = itemids.get(i);
+            invList.get(ItemConstants.getInventoryType(itemid).getType()).add(new Pair<>(itemid, quantity.get(i)));
+        }
+
+        return invList;
+    }
+    
+    public boolean canHoldAllAfterRemoving(List<Integer> toAddItemids, List<Integer> toAddQuantity, List<Integer> toRemoveItemids, List<Integer> toRemoveQuantity) {
+        List<List<Pair<Integer, Integer>>> toAddItemList = prepareInventoryItemList(toAddItemids, toAddQuantity);
+            List<List<Pair<Integer, Integer>>> toRemoveItemList = prepareInventoryItemList(toRemoveItemids, toRemoveQuantity);
+            
+            MapleInventoryProof prfInv = (MapleInventoryProof) this.getInventory(MapleInventoryType.CANHOLD);
+            prfInv.lockInventory();
+            try {
+                for(int i = MapleInventoryType.EQUIP.getType(); i < MapleInventoryType.CASH.getType(); i++) {
+                    List<Pair<Integer, Integer>> toAdd = toAddItemList.get(i);
+                    
+                    if(!toAdd.isEmpty()) {
+                        List<Pair<Integer, Integer>> toRemove = toRemoveItemList.get(i);
+                        
+                        MapleInventory inv = this.getInventory(i);
+                        prfInv.cloneContents(inv);
+                        
+                        for(Pair<Integer, Integer> p : toRemove) {
+                            MapleInventoryManipulator.removeById(c, MapleInventoryType.CANHOLD, p.getLeft(), p.getRight(), false, false);
+                        }
+                        
+                        List<Pair<Item, MapleInventoryType>> addItems = prepareProofInventoryItems(toAdd);
+                        
+                        boolean canHold = MapleInventory.checkSpots(c.getPlayer(), addItems, true);
+                        if(!canHold) {
+                            return false;
+                        }
+                    }
+                }
+            } finally {
+                prfInv.flushContents();
+                prfInv.unlockInventory();
+            }
+            
+            return true;
     }
 
     //---- \/ \/ \/ \/ \/ \/ \/  NOT TESTED  \/ \/ \/ \/ \/ \/ \/ \/ \/ ----
