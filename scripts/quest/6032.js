@@ -64,11 +64,8 @@ function end(mode, type, selection) {
         } else if (status == 3) {
             qm.sendNextPrev("Ok, now you need to hand me a fee, 10,000 mesos that is, for that information. The collected fee shall be used for acquiring the needed materials for your learning of the fine art of the #bMaker#k.");
         } else if (status == 4) {
-            qm.gainMeso(-10000);
             var mainQuestProg = parseProgress(qm.getQuestProgressString(6029, 6029));
-            java.lang.System.out.print("Before " + mainQuestProg + " - ");
             mainQuestProg |= 1;
-            java.lang.System.out.println("After " + mainQuestProg);
             qm.setQuestProgress(6029, formatProgress(mainQuestProg));
             qm.forceCompleteQuest();
             qm.dispose();

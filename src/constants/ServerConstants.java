@@ -35,8 +35,8 @@ public class ServerConstants {
     public static final boolean USE_MAXRANGE_ECHO_OF_HERO = true;
     public static final boolean USE_MAXRANGE = true;                //Will send and receive packets from all events of a map, rather than those of only view range.
     public static final boolean USE_DEBUG = false;                   //Will enable some text prints on the client, oriented for debugging purposes.
-    public static final boolean USE_DEBUG_SHOW_RCVD_PACKET = true;  //Prints on the cmd all received packets
-    public static final boolean USE_DEBUG_SHOW_SEND_PACKET = true;  //prints on console sent packets
+    public static final boolean USE_DEBUG_SHOW_RCVD_PACKET = false;  //Prints on the cmd all received packets
+    public static final boolean USE_DEBUG_SHOW_SEND_PACKET = false;  //prints on console sent packets
     public static final boolean USE_DEBUG_SHOW_INFO_EQPEXP = false; //Prints on the cmd all equip exp gain info.
     public static final boolean USE_MTS = false;
     public static final boolean USE_FAMILY_SYSTEM = false;

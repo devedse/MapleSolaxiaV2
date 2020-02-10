@@ -66,9 +66,7 @@ function end(mode, type, selection) {
         } else if (status == 4) {
             qm.sendNextPrev("That has been made clear, right? Good, then the class is over. Dismissed.");
         } else if (status == 5) {
-            qm.gainMeso(-10000);
             var mainQuestProg = parseProgress(qm.getQuestProgressString(6029, 6029));
-            java.lang.System.out.println(mainQuestProg);
             mainQuestProg |= (1 << 1);
             qm.setQuestProgress(6029, formatProgress(mainQuestProg));
             qm.forceCompleteQuest();
