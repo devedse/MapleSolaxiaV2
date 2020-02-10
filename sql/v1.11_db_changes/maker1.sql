@@ -34,7 +34,7 @@ CREATE TABLE `makercreatedata` (
   `quantity` smallint(6) NOT NULL,
   `tuc` tinyint(3) NOT NULL,
   PRIMARY KEY (`id`,`itemid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -59,7 +59,7 @@ CREATE TABLE `makerrecipedata` (
   `req_item` int(11) NOT NULL,
   `count` smallint(6) NOT NULL,
   PRIMARY KEY (`itemid`,`req_item`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -84,7 +84,7 @@ CREATE TABLE `makerreagentdata` (
   `stat` varchar(20) NOT NULL,
   `value` smallint(6) NOT NULL,
   PRIMARY KEY (`itemid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -110,7 +110,7 @@ CREATE TABLE `makerrewarddata` (
   `quantity` smallint(6) NOT NULL,
   `prob` tinyint(3) unsigned NOT NULL DEFAULT '100',
   PRIMARY KEY (`itemid`,`rewardid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
