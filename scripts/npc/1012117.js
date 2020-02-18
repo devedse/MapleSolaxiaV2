@@ -26,21 +26,23 @@
 */
 
 var status = 0;
-var mhair = Array(32410, /*Overgrown Hair*/
-                  32390, /*Bed Head Hair*/
-                  33260, /*Neinheart Hair*/
-                  36920, /*Randy Hair*/
-                  36910, /*Black Daredevil Hair*/
-                  //43010, /*Pastel Goth*/
-                  36910,
-                  35650 /*Toth Hair*/);
-var fhair = Array(37560, /*Bow Bleached Hair*/
-                  37640, /*Eternal Wind Hair*/
-                  32650, /*Asuna Hair Hair*/
-                  33420, /*Full Margate Hair*/
-                  31890, /*Short Twin Tails*/
-                  //41090, /*Prim Air Hair*/
-                  34370 /*Shaggy Bobbed Hair*/);
+var mhair = Array(
+                36790,
+                33290,
+                37690,
+                35180,
+                33040,
+                36150,
+                39000);
+var fhair = Array(
+                38050,
+                39250,
+                34400,
+                39330,
+                37450,
+                37090,
+                39350);
+
 var hairnew = Array();
 
 function start() {
