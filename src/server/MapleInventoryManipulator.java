@@ -63,7 +63,7 @@ public class MapleInventoryManipulator {
         return addById(c, itemId, quantity, owner, petid, (byte) 0, expiration);
     }
 
-    public static boolean addById(MapleClient c, int itemId, short quantity, String owner, int petid, byte flag, long expiration) {
+    public static boolean addById(MapleClient c, int itemId, short quantity, String owner, int petid, short flag, long expiration) {
         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
         MapleInventoryType type = ii.getInventoryType(itemId);
         if (!type.equals(MapleInventoryType.EQUIP)) {

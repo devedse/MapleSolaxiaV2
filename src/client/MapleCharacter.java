@@ -2446,7 +2446,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                         for (Item item : inv.list()) {
                             expiration = item.getExpiration();
                             if (expiration != -1 && (expiration < currenttime) && ((item.getFlag() & ItemConstants.LOCK) == ItemConstants.LOCK)) {
-                                byte aids = item.getFlag();
+                                short aids = item.getFlag();
                                 aids &= ~(ItemConstants.LOCK);
                                 item.setFlag(aids); //Probably need a check, else people can make expiring items into permanent items...
                                 item.setExpiration(-1);

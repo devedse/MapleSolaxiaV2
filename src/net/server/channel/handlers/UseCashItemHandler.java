@@ -289,7 +289,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
                 if (eq == null) { //Check if the type is EQUIPMENT?
                     return;
                 }
-                byte flag = eq.getFlag();
+                short flag = eq.getFlag();
                 flag |= ItemConstants.LOCK;
                 if (eq.getExpiration() > -1) {
                     return; //No perma items pls
@@ -558,7 +558,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
                 return;
             }
             if (!type.equals(MapleInventoryType.USE)) {
-                item.setFlag((byte) ItemConstants.KARMA);
+                item.setFlag((short) ItemConstants.KARMA);
             }
 
             c.getPlayer().forceUpdateItem(item);

@@ -94,7 +94,7 @@ public final class EnterMTSHandler extends AbstractMaplePacketHandler {
                     equip.setInt((short) rs.getInt("int"));
                     equip.setJump((short) rs.getInt("jump"));
                     equip.setVicious((short) rs.getInt("vicious"));
-                    equip.setFlag((byte) rs.getInt("flag"));
+                    equip.setFlag((short) rs.getInt("flag"));
                     equip.setLuk((short) rs.getInt("luk"));
                     equip.setMatk((short) rs.getInt("matk"));
                     equip.setMdef((short) rs.getInt("mdef"));
@@ -161,7 +161,7 @@ public final class EnterMTSHandler extends AbstractMaplePacketHandler {
                             equip.setWdef((short) rs.getInt("wdef"));
                             equip.setUpgradeSlots((byte) rs.getInt("upgradeslots"));
                             equip.setLevel((byte) rs.getInt("level"));
-                            equip.setFlag((byte) rs.getInt("flag"));
+                            equip.setFlag((short) rs.getInt("flag"));
                             items.add(new MTSItemInfo((Item) equip, rs.getInt("price"), rs.getInt("id"), rs.getInt("seller"), rs.getString("sellername"), rs.getString("sell_ends")));
                         }
                     }
@@ -208,7 +208,7 @@ public final class EnterMTSHandler extends AbstractMaplePacketHandler {
                             equip.setWdef((short) rs.getInt("wdef"));
                             equip.setUpgradeSlots((byte) rs.getInt("upgradeslots"));
                             equip.setLevel((byte) rs.getInt("level"));
-                            equip.setFlag((byte) rs.getInt("flag"));
+                            equip.setFlag((short) rs.getInt("flag"));
                             items.add(new MTSItemInfo((Item) equip, rs.getInt("price"), rs.getInt("id"), rs.getInt("seller"), rs.getString("sellername"), rs.getString("sell_ends")));
                         }
                     }

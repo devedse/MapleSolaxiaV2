@@ -29,13 +29,13 @@ import client.inventory.MapleInventoryType;
  * @author Ronan
  */
 public final class ItemConstants {
-    public final static int LOCK = 0x01;
-    public final static int SPIKES = 0x02;
-    public final static int COLD = 0x04;
-    public final static int UNTRADEABLE = 0x08;
-    public final static int KARMA = 0x10;
-    public final static int PET_COME = 0x80;
-    public final static int ACCOUNT_SHARING = 0x100;
+    public final static short LOCK = 0x01;
+    public final static short SPIKES = 0x02;
+    public final static short COLD = 0x04;
+    public final static short UNTRADEABLE = 0x08;
+    public final static short KARMA = 0x10;
+    public final static short PET_COME = 0x80;
+    public final static short ACCOUNT_SHARING = 0x100;
     public final static float ITEM_ARMOR_EXP = 1 / 350000;
     public static final float ITEM_WEAPON_EXP = 1 / 700000;
 
@@ -103,7 +103,7 @@ public final class ItemConstants {
         return scrollId > 2048999 && scrollId < 2049004;
     }
     
-    public static boolean isFlagModifier(int scrollId, byte flag) {
+    public static boolean isFlagModifier(int scrollId, short flag) {
         if(scrollId == 2041058 && ((flag & ItemConstants.COLD) == ItemConstants.COLD)) return true;
         if(scrollId == 2040727 && ((flag & ItemConstants.SPIKES) == ItemConstants.SPIKES)) return true;
         return false;

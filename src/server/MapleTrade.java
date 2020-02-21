@@ -92,7 +92,7 @@ public class MapleTrade {
         meso = 0;
         for (Item item : exchangeItems) {
             if ((item.getFlag() & ItemConstants.KARMA) == ItemConstants.KARMA) 
-                item.setFlag((byte) (item.getFlag() ^ ItemConstants.KARMA)); //items with scissors of karma used on them are reset once traded
+                item.setFlag((short) (item.getFlag() ^ ItemConstants.KARMA)); //items with scissors of karma used on them are reset once traded
 
             MapleInventoryManipulator.addFromDrop(chr.getClient(), item, show);
         }

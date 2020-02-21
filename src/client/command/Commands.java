@@ -339,7 +339,7 @@ public class Commands {
             equip.setHp(stat);
             equip.setMp(stat);
             
-            byte flag = equip.getFlag();
+            short flag = equip.getFlag();
             flag |= ItemConstants.UNTRADEABLE;
             equip.setFlag(flag);
         }
@@ -1165,11 +1165,11 @@ public class Commands {
                                 
                                 toDrop.setOwner(player.getName());
                                 if(player.gmLevel() < 3) {
-                                    byte b = toDrop.getFlag();
-                                    b |= ItemConstants.ACCOUNT_SHARING;
-                                    b |= ItemConstants.UNTRADEABLE;
+                                    short flag = toDrop.getFlag();
+                                    flag |= ItemConstants.ACCOUNT_SHARING;
+                                    flag |= ItemConstants.UNTRADEABLE;
                                     
-                                    toDrop.setFlag(b);
+                                    toDrop.setFlag(flag);
                                 }
 //                                int[] expCoupons = {5211000, 5211001, 5211002, 5211003, 5211004, 5211005, //EXP Coupons
 //                                               5211006, 5211007, 5211008, 5211009, 5211010, 5211011,
@@ -2233,7 +2233,7 @@ public class Commands {
                                         eu.setStr(incval);
                                         eu.setLuk(incval);
                                         
-                                        byte flag = eu.getFlag();
+                                        short flag = eu.getFlag();
                                         flag |= ItemConstants.UNTRADEABLE;
                                         eu.setFlag(flag);
                                         

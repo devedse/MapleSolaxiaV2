@@ -253,7 +253,7 @@ public class DueyProcessor {
     public static void sendEquip(int itemId, short upgradeSlots, byte level, 
             short str, short dex, short _int, short luk, short hp, short mp, 
             short watk, short matk, short wdef, short mdef, short acc, 
-            short avoid, short hands, short speed, short jump, byte flag, String owner, 
+            short avoid, short hands, short speed, short jump, short flag, String owner, 
             int mesos, long timeLimit, String senderName, int recipientId, int recvAcctId) {
         Equip eq = new Equip(itemId, (short) 0, upgradeSlots);
         eq.setLevel(level);
@@ -330,7 +330,7 @@ public class DueyProcessor {
                             ps2.setInt(20, eq.getHands());
                             ps2.setInt(21, eq.getSpeed());
                             ps2.setInt(22, eq.getJump());
-                            ps2.setByte(23, eq.getFlag());
+                            ps2.setInt(23, eq.getFlag());
                             ps2.setString(24, eq.getOwner());
                             if (timeLimit < 0) {
                                 ps2.setLong(25, eq.getExpiration());
@@ -471,7 +471,7 @@ public class DueyProcessor {
                 eq.setHands((short) rs.getInt("hands"));
                 eq.setSpeed((short) rs.getInt("speed"));
                 eq.setJump((short) rs.getInt("jump"));
-                eq.setFlag(rs.getByte("Flags"));
+                eq.setFlag((short) rs.getInt("Flags"));
                 eq.setOwner(rs.getString("owner"));
                 long timeLimit = rs.getLong("TimeLimit");
                 if (timeLimit > 0){

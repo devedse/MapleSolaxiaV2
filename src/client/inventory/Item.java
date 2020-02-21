@@ -35,7 +35,7 @@ public class Item implements Comparable<Item> {
     private MaplePet pet = null;
     private String owner = "";
     protected List<String> log;
-    private byte flag;
+    private short flag;
     private long expiration = -1;
     private String giftFrom = "";
 
@@ -134,11 +134,11 @@ public class Item implements Comparable<Item> {
         return Collections.unmodifiableList(log);
     }
 
-    public byte getFlag() {
+    public short getFlag() {
         return flag;
     }
 
-    public void setFlag(byte b) {
+    public void setFlag(short b) {
         this.flag = b;
     }
 

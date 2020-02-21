@@ -607,11 +607,11 @@ public class MapleItemInformationProvider {
                     switch (scrollId) {
                         case 2040727:
                             flag |= ItemConstants.SPIKES;
-                            nEquip.setFlag((byte) flag);
+                            nEquip.setFlag(flag);
                             return equip;
                         case 2041058:
                             flag |= ItemConstants.COLD;
-                            nEquip.setFlag((byte) flag);
+                            nEquip.setFlag(flag);
                             return equip;
                         case 2049000:
                         case 2049001:
@@ -1144,11 +1144,11 @@ public class MapleItemInformationProvider {
                 } else if (stat.getKey().equals("tuc")) {
                     nEquip.setUpgradeSlots((byte) stat.getValue().intValue());
                 } else if (isDropRestricted(equipId)) {
-                    byte flag = nEquip.getFlag();
+                    short flag = nEquip.getFlag();
                     flag |= ItemConstants.UNTRADEABLE;
                     nEquip.setFlag(flag);
                 } else if (stats.get("fs") > 0) {
-                    byte flag = nEquip.getFlag();
+                    short flag = nEquip.getFlag();
                     flag |= ItemConstants.SPIKES;
                     nEquip.setFlag(flag);
                     equipCache.put(equipId, nEquip);

@@ -81,7 +81,7 @@ public final class StorageHandler extends AbstractMaplePacketHandler {
 					String itemName = MapleItemInformationProvider.getInstance().getName(item.getItemId());
 					FilePrinter.print(FilePrinter.STORAGE + c.getAccountName() + ".txt", c.getPlayer().getName() + " took out " + item.getQuantity() + " " + itemName + " (" + item.getItemId() + ")\r\n");
 					if ((item.getFlag() & ItemConstants.KARMA) == ItemConstants.KARMA) {
-						item.setFlag((byte) (item.getFlag() ^ ItemConstants.KARMA)); //items with scissors of karma used on them are reset once traded
+						item.setFlag((short) (item.getFlag() ^ ItemConstants.KARMA)); //items with scissors of karma used on them are reset once traded
 					}
 					MapleInventoryManipulator.addFromDrop(c, item, false);
 					storage.sendTakenOut(c, ii.getInventoryType(item.getItemId()));
