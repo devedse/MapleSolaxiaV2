@@ -398,7 +398,7 @@ public class MapleInventoryManipulator {
         }
         boolean itemChanged = false;
         if (MapleItemInformationProvider.getInstance().isUntradeableOnEquip(source.getItemId())) {
-            source.setFlag((byte) ItemConstants.UNTRADEABLE);
+            source.setFlag((short) ItemConstants.UNTRADEABLE);
             itemChanged = true;
         }
         if (source.getRingId() > -1) {

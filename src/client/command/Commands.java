@@ -1148,7 +1148,7 @@ public class Commands {
 					petid = MaplePet.createPet(itemId);
 				}
                                 
-                                byte flag = 0;
+                                short flag = 0;
                                 if(player.gmLevel() < 3) {
                                     flag |= ItemConstants.ACCOUNT_SHARING;
                                     flag |= ItemConstants.UNTRADEABLE;
