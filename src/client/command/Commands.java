@@ -381,7 +381,7 @@ public class Commands {
 			int days    = (int) ((milliseconds / (1000*60*60*24)));
  			player.yellowMessage("Server has been online for " + days + " days " + hours + " hours " + minutes + " minutes and " + seconds + " seconds.");
 			break;
-                    
+			
 		case "gacha":
 			Gachapon gacha = null;
 			String search = joinStringFrom(sub, 1);
@@ -656,30 +656,40 @@ public class Commands {
 		case "ranks":
 			player.announce(MaplePacketCreator.showPlayerRanks(9010000, PlayerRanking.getInstance().getRanking()));
 			break;
-                            
-                case "apreset":
-                    if(sub.length != 1){
-                        player.yellowMessage("Syntax: !apreset");
-                    }
-                    c.getAbstractPlayerInteraction().openNpc(9010000, "apreset");
-                    break;
-                    
-                case "ultsp":
-                    if(sub.length != 1){
-                        player.yellowMessage("Syntax: !ultsp");
-                    }
-                    
-                    if((100 <= player.getJob().getId() && player.getJob().getId() <= 522) || (900 <= player.getJob().getId() && player.getJob().getId() <= 910))
-                        c.getAbstractPlayerInteraction().openNpc(9010000, "UA_SPDistribution");
-                    else
-                        player.yellowMessage("This command is intended for Explorers only.");
-                        
-                    break;
-                default:
-                        return false;
-                }
-                
-                return true;
+		case "innocence":
+			if(sub.length != 1){
+				player.yellowMessage("Syntax: !innocence");
+			}
+			c.getAbstractPlayerInteraction().openNpc(9010000, "innocence_scroll");
+			break;
+
+		case "spreset":
+			c.getAbstractPlayerInteraction().openNpc(9010000, "spreset");
+			break;
+
+		case "apreset":
+			if(sub.length != 1){
+				player.yellowMessage("Syntax: !apreset");
+			}
+			c.getAbstractPlayerInteraction().openNpc(9010000, "apreset");
+			break;
+			
+		case "ultsp":
+			if(sub.length != 1){
+				player.yellowMessage("Syntax: !ultsp");
+			}
+			
+			if((100 <= player.getJob().getId() && player.getJob().getId() <= 522) || (900 <= player.getJob().getId() && player.getJob().getId() <= 910))
+				c.getAbstractPlayerInteraction().openNpc(9010000, "UA_SPDistribution");
+			else
+				player.yellowMessage("This command is intended for Explorers only.");
+				
+			break;
+		default:
+				return false;
+		}
+		
+		return true;
         }
         
         public static boolean executeSolaxiaCommandLv1(Channel cserv, Server srv, MapleClient c, String[] sub) { //Donator
@@ -2134,7 +2144,7 @@ public class Commands {
                                         player.equipChanged();
                                 } else {
                                         int itemId = Integer.parseInt(sub[2]);
-                                        if(!(itemId >= 30000 && itemId < 44417) || MapleItemInformationProvider.getInstance().getName(itemId) == null) {
+                                        if(!(itemId >= 30000 && itemId < 50000) || MapleItemInformationProvider.getInstance().getName(itemId) == null) {
                                                 player.yellowMessage("Hair id '" + sub[2] + "' does not exist.");
                                                 break;
                                         }
