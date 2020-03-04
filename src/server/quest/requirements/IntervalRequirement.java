@@ -54,7 +54,7 @@ public class IntervalRequirement extends MapleQuestRequirement {
 	
 	@Override
 	public boolean check(MapleCharacter chr, Integer npcid) {
-		boolean check = !chr.getQuest(MapleQuest.getInstance(questID)).getStatus().equals(MapleQuestStatus.Status.COMPLETED);
+		boolean check = !chr.getQuest(MapleQuest.getInstance(questID)).getStatus().equals(MapleQuestStatus.Status.COMPLETED) && !MapleQuest.getInstance(questID).getRepeatable();
 		boolean check2 = chr.getQuest(MapleQuest.getInstance(questID)).getCompletionTime() <= System.currentTimeMillis() - interval;
 		return check || check2;
 	}

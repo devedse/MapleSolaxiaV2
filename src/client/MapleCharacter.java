@@ -6033,7 +6033,12 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 synchronized (quests) {
                     for (MapleQuestStatus q : quests.values()) {
                         ps.setInt(2, q.getQuest().getId());
-                        ps.setInt(3, q.getStatus().getId());
+                        // Set repeatable quests to not started if they were completed.
+                        if (q.getQuest().getRepeatable() && (q.getStatus().getId() == MapleQuestStatus.Status.COMPLETED.getId())) {
+                            ps.setInt(3, 0);
+                        } else {
+                            ps.setInt(3, q.getStatus().getId());
+                        }
                         ps.setInt(4, (int) (q.getCompletionTime() / 1000));
                         ps.setLong(5, q.getExpirationTime());
                         ps.setInt(6, q.getForfeited());
