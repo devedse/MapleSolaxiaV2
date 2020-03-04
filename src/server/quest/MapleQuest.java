@@ -213,20 +213,16 @@ public class MapleQuest {
 
     public boolean canStart(MapleCharacter c, int npcid) {
         if (c.getQuest(this).getStatus() != Status.NOT_STARTED && !(c.getQuest(this).getStatus() == Status.COMPLETED && repeatable)) {
-            System.out.println("Cannot start quest from npc: " + npcid);
             return false;
         }
         for (MapleQuestRequirement r : startReqs.values()) {
             if (!r.check(c, npcid)) {
-                System.out.print("The requirement class is: " + r.getClass().getName());
                 if(r.getType().getType() == MapleQuestRequirementType.INTERVAL.getType()) {
                     c.message("This quest will become available again in approximately " + getIntervalTimeLeft(c, (IntervalRequirement)r) + ".");
                 }
-                System.out.println("The quest cannot be started.");
                 return false;
             }
         }
-        System.out.println("Can start quest from npc: " + npcid);
         return true;
     }
 
