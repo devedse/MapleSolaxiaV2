@@ -6035,7 +6035,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                         ps.setInt(2, q.getQuest().getId());
                         // Set repeatable quests to not started if they were completed.
                         if (q.getQuest().getRepeatable() && (q.getStatus().getId() == MapleQuestStatus.Status.COMPLETED.getId())) {
-                            ps.setInt(3, 0);
+                            ps.setInt(3, MapleQuestStatus.Status.NOT_STARTED.getId());
                         } else {
                             ps.setInt(3, q.getStatus().getId());
                         }
