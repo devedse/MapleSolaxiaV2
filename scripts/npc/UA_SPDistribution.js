@@ -1,5 +1,6 @@
 importPackage(Packages.constants.skills);
 importPackage(Packages.client);
+importPackage(Packages.java.util.stream);
 
 var status;
 var player;
@@ -100,6 +101,18 @@ function action(mode, type, selection){
 	}
 }
 
+function splice(array, index, count) {
+        if (array == null
+            || index < 0
+            || index >= arr.length) { 
+            return array; 
+        } 
+	return IntStream.range(0, array.length)
+		.filter(i -> !(i >= index && i < (index + count)))
+		.map(i -> array[i])
+		.toArray();
+}
+
 
 function initializeMaster(){
 	var allJobSkills = SkillFactory.getJobSkills(job);
@@ -134,8 +147,8 @@ function initializeMaster(){
 					}
 
 					tempMaster.push(master[i]);
-					playerSkillSet.splice(j, 1);
-					playerSkillEntry.splice(j, 1);
+					playerSkillSet = splice(playerSkillSet, j, 1);
+					playerSkillEntry = splice(playerSkillEntry, j, 1);
 					break;
 				}
 			}
@@ -154,8 +167,8 @@ function initializeMaster(){
 						master[i].entry.expiration = playerSkillEntry[j].expiration;
 					}
 
-					playerSkillSet.splice(j, 1);
-					playerSkillEntry.splice(j, 1);
+					playerSkillSet = splice(playerSkillSet, j, 1);
+					playerSkillEntry = splice(playerSkillEntry, j, 1);
 					break;
 				}
 			}
