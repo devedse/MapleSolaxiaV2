@@ -436,7 +436,8 @@ public class MapleMap {
     private Point calcPointBelow(Point initial) {
         MapleFoothold fh = footholds.findBelow(initial);
         if (fh == null) {
-            return null;
+            initial.y -= 20;
+            return calcPointBelow(initial);
         }
         int dropY = fh.getY1();
         if (!fh.isWall() && fh.getY1() != fh.getY2()) {
