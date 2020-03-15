@@ -437,6 +437,10 @@ public class MapleMap {
         MapleFoothold fh = footholds.findBelow(initial);
         if (fh == null) {
             initial.y -= 20;
+            // Not sure if this works
+            if (!mapArea.contains(initial)){
+                return null;
+            }
             return calcPointBelow(initial);
         }
         int dropY = fh.getY1();
