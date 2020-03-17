@@ -114,7 +114,7 @@ Use docker-compose to run the entire Dietstory service including a populated loc
 First build the `dietstory-populate-db` image locally.
 
 ```
-docker build -build-arg MYSQL_HOST_NAME=dietstory_database MYSQL_ROOT_PASSWORD=<MY_DB_PASSWORD> -t dietstory-populate-db -f docker/populate_database/Dockerfile .
+docker build docker build --build-arg MYSQL_HOST_NAME=dietstory_database --build-arg MYSQL_ROOT_PASSWORD=<MY_DB_PASSWORD> -t dietstory-populate-db -f docker/populate_database/Dockerfile .
 ```
 
 Then run the following command to spin up the entire Dietstory stack.

@@ -34,19 +34,19 @@ function start() {
 function getRewardThenWarp(cm, location) {
     var amount_to_gain = 0;
     if (cm.getLatestEventPlacing() == 1) {
-        amount_to_gain = 10;
+        amount_to_gain = 20;
     } else if (cm.getLatestEventPlacing() == 2) {
-        amount_to_gain = 5;
+        amount_to_gain = 10;
     } else if (cm.getLatestEventPlacing() == 3) {
-        amount_to_gain = 3;
+        amount_to_gain = 5;
     } else if (cm.getLatestEventPlacing() == 4) {
-        amount_to_gain = 2;
+        amount_to_gain = 3;
     } else if (cm.getLatestEventPlacing() == 5) {
         amount_to_gain = 1;
     }
 
     if (cm.canHold(golden_maple_leaf, amount_to_gain)) {
-        cm.gainItem(golden_maple_leaf, amount_to_gain);
+        cm.gainUntradeableItem(golden_maple_leaf, amount_to_gain);
         cm.setLatestEventPlacing(0);
         cm.warp(location);
         cm.dispose();
@@ -67,7 +67,7 @@ function action(mode, type, selection) {
             status--;
         }
         if (status == 0) {
-            cm.sendNext("Congratulations on making it this far! We hope you enjoyed the event!!");
+            cm.sendNext("Congratulations on making it this far! We hope you enjoyed the event!! Here are some Golden Maple Leaves!");
         } else if (status == 1) {
             var location = cm.getPlayer().getSavedLocation("EVENT");
             if (location == -1) {

@@ -444,7 +444,7 @@ public class AbstractPlayerInteraction {
             return (null);
         }
 
-        tmp = gainItem(afterId, (short) 1, false, true, period, target);
+        tmp = gainItem(afterId, (short) 1, false, true, period, target, false);
         getPlayer().unequipPet(target, true, false);
 
         /*
@@ -472,6 +472,10 @@ public class AbstractPlayerInteraction {
         return evolved;
     }
 
+    public void gainUntradeableItem(int id, short quantity) {
+        gainUntradeableItem(id, quantity, false, true, -1);
+    }
+
     public void gainItem(int id, short quantity) {
         gainItem(id, quantity, false, true);
     }
@@ -493,7 +497,11 @@ public class AbstractPlayerInteraction {
     }
 
     public Item gainItem(int id, short quantity, boolean randomStats, boolean showMessage, long expires) {
-        return gainItem(id, quantity, randomStats, showMessage, expires, null);
+        return gainItem(id, quantity, randomStats, showMessage, expires, null, false);
+    }
+
+    public Item gainUntradeableItem(int id, short quantity, boolean randomstats, boolean showMessage, long expires) {
+        return gainItem(id, quantity, randomstats, showMessage, expires, null, true);
     }
 
     private boolean isAccessory(int id) {
@@ -501,7 +509,7 @@ public class AbstractPlayerInteraction {
         return (val >= 111 && val <= 113);
     }
 
-    public Item gainItem(int id, short quantity, boolean randomStats, boolean showMessage, long expires, MaplePet from) {
+    public Item gainItem(int id, short quantity, boolean randomStats, boolean showMessage, long expires, MaplePet from, boolean isUntradeable) {
         Item item = null;
         MaplePet evolved = null;
         int petId = -1;
@@ -551,6 +559,10 @@ public class AbstractPlayerInteraction {
 
             if (expires >= 0) {
                 item.setExpiration(System.currentTimeMillis() + expires);
+            }
+
+            if (isUntradeable) {
+                item.setFlag((byte) ItemConstants.UNTRADEABLE);
             }
 
             item.setPetId(petId);

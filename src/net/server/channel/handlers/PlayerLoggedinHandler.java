@@ -27,6 +27,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import client.inventory.Item;
+import constants.ItemConstants;
 import server.TimerManager;
 import net.AbstractMaplePacketHandler;
 import net.server.PlayerBuffValueHolder;
@@ -287,6 +289,12 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
             player.updateCouponRates();
             
             player.receivePartyMemberHP();
+
+            // TODO: Remove this after it's released into production.
+            List<client.inventory.Item> goldenMapleLeaves = player.getInventory(MapleInventoryType.ETC).listById(4000313);
+            for (Item goldenMapleLeaf : goldenMapleLeaves) {
+                goldenMapleLeaf.setFlag((byte) ItemConstants.UNTRADEABLE);
+            }
         }
     }
 
