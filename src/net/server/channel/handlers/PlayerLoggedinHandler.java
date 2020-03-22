@@ -289,12 +289,6 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
             player.updateCouponRates();
             
             player.receivePartyMemberHP();
-
-            // TODO: Remove this after it's released into production.
-            List<client.inventory.Item> goldenMapleLeaves = player.getInventory(MapleInventoryType.ETC).listById(4000313);
-            for (Item goldenMapleLeaf : goldenMapleLeaves) {
-                goldenMapleLeaf.setFlag((byte) ItemConstants.UNTRADEABLE);
-            }
         }
     }
 

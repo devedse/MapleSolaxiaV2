@@ -562,7 +562,7 @@ public class AbstractPlayerInteraction {
             }
 
             if (isUntradeable) {
-                item.setFlag((byte) ItemConstants.UNTRADEABLE);
+                item.setFlag((byte)(item.getFlag() | ItemConstants.UNTRADEABLE));
             }
 
             item.setPetId(petId);
