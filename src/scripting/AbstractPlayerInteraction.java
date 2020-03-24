@@ -472,8 +472,8 @@ public class AbstractPlayerInteraction {
         return evolved;
     }
 
-    public void gainUntradeableItem(int id, short quantity) {
-        gainUntradeableItem(id, quantity, false, true, -1);
+    public void gainAccountShareableItem(int id, short quantity) {
+        gainAccountShareableItem(id, quantity, false, true, -1);
     }
 
     public void gainItem(int id, short quantity) {
@@ -500,7 +500,7 @@ public class AbstractPlayerInteraction {
         return gainItem(id, quantity, randomStats, showMessage, expires, null, false);
     }
 
-    public Item gainUntradeableItem(int id, short quantity, boolean randomstats, boolean showMessage, long expires) {
+    public Item gainAccountShareableItem(int id, short quantity, boolean randomstats, boolean showMessage, long expires) {
         return gainItem(id, quantity, randomstats, showMessage, expires, null, true);
     }
 
@@ -509,7 +509,7 @@ public class AbstractPlayerInteraction {
         return (val >= 111 && val <= 113);
     }
 
-    public Item gainItem(int id, short quantity, boolean randomStats, boolean showMessage, long expires, MaplePet from, boolean isUntradeable) {
+    public Item gainItem(int id, short quantity, boolean randomStats, boolean showMessage, long expires, MaplePet from, boolean isAccountShareable) {
         Item item = null;
         MaplePet evolved = null;
         int petId = -1;
@@ -561,8 +561,8 @@ public class AbstractPlayerInteraction {
                 item.setExpiration(System.currentTimeMillis() + expires);
             }
 
-            if (isUntradeable) {
-                item.setFlag((byte)(item.getFlag() | ItemConstants.UNTRADEABLE));
+            if (isAccountShareable) {
+                item.setFlag((byte)(item.getFlag() | ItemConstants.ACCOUNT_SHARING));
             }
 
             item.setPetId(petId);

@@ -46,7 +46,7 @@ function getRewardThenWarp(cm, location) {
     }
 
     if (cm.canHold(golden_maple_leaf, amount_to_gain)) {
-        cm.gainUntradeableItem(golden_maple_leaf, amount_to_gain);
+        cm.gainAccountShareableItem(golden_maple_leaf, amount_to_gain);
         cm.setLatestEventPlacing(0);
         cm.warp(location);
         cm.dispose();
