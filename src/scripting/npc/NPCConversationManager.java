@@ -373,6 +373,8 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             Item itemGained = gainItem(prize.getId(), (short) 1, false, true);
             itemGained.setFlag((byte)(itemGained.getFlag() | ItemConstants.LOCK));
             
+            getPlayer().forceUpdateItem(itemGained);
+            
             sendNext("You have obtained a #b#t" + prize.getId() + "##k.");
             LogHelper.logGacha(getPlayer(), prize.getId(), "Special");
             Server.getInstance().broadcastMessage(MaplePacketCreator.gachaponMessage(itemGained, "Special", getPlayer()));
@@ -387,7 +389,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                 str.append(ii.getName(id) + ", ");
             }
             str.delete(str.length() - 2, str.length()).append("\r\n");
-            sendNext(str.toString());
+            sendPrev(str.toString());
         }
         
         public void upgradeAlliance() {
