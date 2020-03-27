@@ -24,7 +24,6 @@ function action (mode, type, selection){
     else
         status--;
         
-    java.lang.System.out.println(status);
     if (status == 0){
         cm.sendSimple("This is the Secret Special Gachapon. What would you like to do?\r\n#L1##bRoll the Special Gachapon#l#k\r\n#L2##bCheck the available prizes#l#k\r\n");
     }
