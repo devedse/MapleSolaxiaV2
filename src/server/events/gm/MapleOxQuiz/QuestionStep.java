@@ -173,7 +173,6 @@ public class QuestionStep extends EventStep {
 			} else {
 				chr.setLatestEventPlacement(5);
 			}
-
 		}
 	}
 

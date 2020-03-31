@@ -81,6 +81,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     private List<Integer> stolenItems = new ArrayList<>();
     private int team;
     private final HashMap<Integer, AtomicInteger> takenDamage = new HashMap<>();
+    private boolean isBossBattleMonster = false;
 
     private ReentrantLock monsterLock = new ReentrantLock();
     private ReadWriteLock usedSkillLock = new ReentrantReadWriteLock();
@@ -143,6 +144,12 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             mp = 0;
         }
         this.mp = mp;
+    }
+
+    public boolean isBossBattleMonster() { return this.isBossBattleMonster; }
+
+    public void setIsBossBattleMonster(boolean isBossBattleMonster) {
+        this.isBossBattleMonster = isBossBattleMonster;
     }
 
     public int getMaxMp() {

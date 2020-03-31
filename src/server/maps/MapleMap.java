@@ -65,6 +65,7 @@ import server.TimerManager;
 import server.events.gm.MapleCoconut;
 import server.events.gm.MapleFitness;
 import server.events.gm.MapleOla;
+import server.events.gm.MapleOxQuiz.MapleBossBattle;
 import server.events.gm.MapleOxQuiz.MapleOxQuiz;
 import server.events.gm.MapleSnowball;
 import server.life.MapleLifeFactory;
@@ -3111,6 +3112,9 @@ public class MapleMap {
             setSnowball(0, new MapleSnowball(0, this));
             setSnowball(1, new MapleSnowball(1, this));
             getSnowball(chr.getTeam()).startEvent();
+        } else if (this.mapid == MapleBossBattle.MAPLE_BOSS_BATTLE_MAP_ID) {
+            MapleBossBattle bossBattle = new MapleBossBattle(this, 50);
+            bossBattle.startEvent();
         }
     }
 

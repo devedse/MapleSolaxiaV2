@@ -57,6 +57,8 @@ import tools.MaplePacketCreator;
 import tools.Randomizer;
 import tools.data.input.SeekableLittleEndianAccessor;
 
+import static java.lang.Integer.min;
+
 public final class TakeDamageHandler extends AbstractMaplePacketHandler {
 
     @Override
@@ -219,7 +221,11 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
                     hploss += mploss - player.getMp();
                     mploss = player.getMp();
                 }
-                player.addMPHP(-hploss, -mploss);
+                if (!attacker.isBossBattleMonster()) {
+                    player.addMPHP(-hploss, -mploss);
+                } else {
+                    player.addMPHP(-1 * min(hploss, player.getMaxHp()-1), -mploss);
+                }
             } else if (mesoguard != null) {
                 damage = Math.round(damage / 2);
                 int mesoloss = (int) (damage * (mesoguard.doubleValue() / 100.0));
@@ -229,6 +235,11 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
                 } else {
                     player.gainMeso(-mesoloss, false);
                 }
+                if (!attacker.isBossBattleMonster()) {
+                    player.addMPHP(-damage, -mpattack);
+                } else {
+                    player.addMPHP(-1 * min(damage, player.getMaxHp()-1), -mpattack);
+                }
                 player.addMPHP(-damage, -mpattack);
             } else {
                 if (player.getBuffedValue(MapleBuffStat.MONSTER_RIDING) != null) {
@@ -236,7 +247,11 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
                         player.decreaseBattleshipHp(damage);
                     }
                 }
-                player.addMPHP(-damage, -mpattack);
+                if (!attacker.isBossBattleMonster()) {
+                    player.addMPHP(-damage, -mpattack);
+                } else {
+                    player.addMPHP(-1 * min(damage, player.getMaxHp()-1), -mpattack);
+                }
             }
         }
         if (!player.isHidden()) {

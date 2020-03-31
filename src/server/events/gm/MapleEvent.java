@@ -90,7 +90,7 @@ public abstract class MapleEvent {
         lock.unlock();
     }
 
-    public boolean tryEnterEvent(MapleCharacter chr) {;
+    public boolean vent(MapleCharacter chr) {;
         lock.lock();
         try {
             if(isOpen && map.getCharacters().size() < limit && chr.getClient().getChannel() == map.getChannel()) {
