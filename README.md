@@ -17,7 +17,7 @@ The Dietstory Project aims to recreate most if not all of Maplestory v83 feature
 ## Download
 
 ``Launcher and resource files coming soon!``
-
+ 
 ## Setup
 
 This is a Java 8 project using the Apache Ant build framework with Apache Ivy dependency manager. Alternatively, setting up the project on NetBeans 8.0.2 IDE will quickly allow you to locally build and run the project. Dietstory also provides a [Docker image](https://hub.docker.com/r/benjixd/dietstory-build) for building the Dietstory Project without an environment setup. 
