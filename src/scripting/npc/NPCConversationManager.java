@@ -367,10 +367,12 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 		}
 	}
         
-        public void doSpecialGachapon() {
+        public boolean doSpecialGachapon() {
             MapleGachaponItem prize = MapleGachapon.getInstance().processWithoutGlobal(-2);
             
             Item itemGained = gainItem(prize.getId(), (short) 1, false, true);
+            if (itemGained == null)
+                return false;
             itemGained.setFlag((byte)(itemGained.getFlag() | ItemConstants.LOCK));
             
             getPlayer().forceUpdateItem(itemGained);
@@ -378,6 +380,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             sendNext("You have obtained a #b#t" + prize.getId() + "##k.");
             LogHelper.logGacha(getPlayer(), prize.getId(), "Special");
             Server.getInstance().broadcastMessage(MaplePacketCreator.gachaponMessage(itemGained, "Special", getPlayer()));
+            return true;
         }
         
         public void checkSpecialGachapon(){

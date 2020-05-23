@@ -30,8 +30,9 @@ function action (mode, type, selection){
     else if (status == 1){
         if (selection == 1){
             if (cm.haveItem(5999999)){
-                cm.gainItem(5999999, -1);
-                cm.doSpecialGachapon();
+                var gotItem = cm.doSpecialGachapon();
+                if (gotItem)
+                    cm.gainItem(5999999, -1);
             }
             else {
                 cm.sendOk("You don't have a Special Gachapon Ticket. Accumulate log in rewards to get a Ticket each month!");
