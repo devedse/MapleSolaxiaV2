@@ -526,6 +526,7 @@ public class MapleClient {
 				}
 				accId = rs.getInt("id");
 				gmlevel = rs.getInt("gm");
+				System.out.println("Gmlevel: " + gmlevel);
 				pin = rs.getString("pin");
 				pic = rs.getString("pic");
 				gender = rs.getByte("gender");
@@ -1035,6 +1036,7 @@ public class MapleClient {
 	}
 
 	public int getGMLevel() {
+		System.out.println("Obtaining gm level: " + gmlevel);
 		return gmlevel;
 	}
         
@@ -1065,6 +1067,7 @@ public class MapleClient {
     }
         
     public void setGMLevel(int level) {
+		System.out.println("Setting gm level: " + gmlevel);
 		gmlevel = level;
 	}
 

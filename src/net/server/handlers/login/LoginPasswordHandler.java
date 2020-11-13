@@ -23,11 +23,23 @@ package net.server.handlers.login;
 
 import java.util.Calendar;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
 import net.MaplePacketHandler;
 import server.TimerManager;
+import tools.HexTool;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
+import java.io.UnsupportedEncodingException;
 import client.MapleClient;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.security.NoSuchAlgorithmException;
+import tools.DatabaseConnection;
+
+import java.security.MessageDigest;
 
 public final class LoginPasswordHandler implements MaplePacketHandler {
 
@@ -36,15 +48,53 @@ public final class LoginPasswordHandler implements MaplePacketHandler {
         return !c.isLoggedIn();
     }
     
+    private static String hashpwSHA512(String pwd) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        MessageDigest digester = MessageDigest.getInstance("SHA-512");
+        digester.update(pwd.getBytes("UTF-8"), 0, pwd.length());
+        return HexTool.toString(digester.digest()).replace(" ", "").toLowerCase();
+    }
 
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-    	
+        System.out.println("Inlog man!!!\r\n");
+
         String login = slea.readMapleAsciiString();
         String pwd = slea.readMapleAsciiString();
         c.setAccountName(login);
         
         int loginok = c.login(login, pwd);
+
+        Connection con = null;
+        PreparedStatement ps = null;
+
+        System.out.println("Loginok: " + loginok);
+
+        if (loginok == 5) {
+            try {
+                con = DatabaseConnection.getConnection();
+                ps = con.prepareStatement("INSERT INTO accounts (name, password, salt, birthday, tempban, verified, gm) VALUES (?, ?, ?, ?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS); //Jayd: Added birthday, tempban
+                ps.setString(1, login);
+                ps.setString(2, hashpwSHA512(pwd + "saltje"));
+                ps.setString(3, "saltje");
+                ps.setString(4, "2018-06-20"); //Jayd's idea: was added to solve the MySQL 5.7 strict checking (birthday)
+                ps.setString(5, "2018-06-20"); //Jayd's idea: was added to solve the MySQL 5.7 strict checking (tempban)
+                ps.setBoolean(6, true);
+                ps.setByte(7, (byte)6);
+                ps.executeUpdate();
+                
+                ResultSet rs = ps.getGeneratedKeys();
+                rs.next();
+                c.setAccID(rs.getInt(1));
+                rs.close();
+            } catch (SQLException | NoSuchAlgorithmException | UnsupportedEncodingException e) {
+                c.setAccID(-1);
+                e.printStackTrace();
+            } finally {
+                disposeSql(con, ps);
+                loginok = c.login(login, pwd);
+            }
+        }
+
         
         if (c.hasBannedIP() || c.hasBannedMac()) {
             c.announce(MaplePacketCreator.getLoginFailed(3));
@@ -80,5 +130,19 @@ public final class LoginPasswordHandler implements MaplePacketHandler {
                 client.disconnect(false, false);
             }
         }, 600000));
+    }
+
+    private static void disposeSql(Connection con, PreparedStatement ps) {
+        try {
+            if (con != null) {
+                con.close();
+            }
+
+            if (ps != null) {
+                ps.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

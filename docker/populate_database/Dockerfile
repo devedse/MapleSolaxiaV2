@@ -1,6 +1,9 @@
 # Quick Start MySQL Database Populator for DietStory
 FROM mysql:8.0.18
 
+ARG MYSQL_HOST_NAME
+ARG MYSQL_ROOT_PASSWORD
+
 # Create database, create tables, drop, shops in order. Apply updates after
 CMD cd /mnt; \
 	while ! mysqladmin ping -h${MYSQL_HOST_NAME} --silent; do \

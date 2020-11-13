@@ -339,7 +339,7 @@ public class Server implements Runnable {
 
         System.out.println("Login server on port " + LOGIN_PORT + "\r\n\r\n");
         System.out.println("API server on port " + API_PORT + "\r\n\r\n");
-        System.out.println("Solaxia is now online.\r\n");
+        System.out.println("Solaxia is now online. fohhh hsuuhhehheeereee\r\n");
         online = true;
     }
 

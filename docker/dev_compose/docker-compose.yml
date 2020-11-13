@@ -47,6 +47,20 @@ services:
     depends_on:
       - populate_database
 
+  phpmyadmin:
+    depends_on:
+      - dietstory_database
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    networks:
+      - dietstory_traffic
+      - dietstory_db
+    ports:
+      - '8080:80'
+    environment:
+      PMA_HOST: dietstory_database
+
 networks:
   dietstory_db:
   dietstory_traffic:
