@@ -72,7 +72,7 @@ public final class LoginPasswordHandler implements MaplePacketHandler {
         if (loginok == 5) {
             try {
                 con = DatabaseConnection.getConnection();
-                ps = con.prepareStatement("INSERT INTO accounts (name, password, salt, birthday, tempban, verified, gm) VALUES (?, ?, ?, ?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS); //Jayd: Added birthday, tempban
+                ps = con.prepareStatement("INSERT INTO accounts (name, password, salt, birthday, tempban, verified, gm, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS); //Jayd: Added birthday, tempban
                 ps.setString(1, login);
                 ps.setString(2, hashpwSHA512(pwd + "saltje"));
                 ps.setString(3, "saltje");
@@ -80,6 +80,7 @@ public final class LoginPasswordHandler implements MaplePacketHandler {
                 ps.setString(5, "2018-06-20"); //Jayd's idea: was added to solve the MySQL 5.7 strict checking (tempban)
                 ps.setBoolean(6, true);
                 ps.setByte(7, (byte)6);
+                ps.setString(8, login + "jaaahoah@bestaaatttnieeet.com");
                 ps.executeUpdate();
                 
                 ResultSet rs = ps.getGeneratedKeys();

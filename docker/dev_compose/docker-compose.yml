@@ -41,6 +41,7 @@ services:
     volumes:
       - "${DIETSTORY_PATH}:/mnt"
     environment:
+      SERVER_HOST: ${SERVER_HOST}
       MYSQL_HOST_NAME: dietstory_database
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     restart: on-failure

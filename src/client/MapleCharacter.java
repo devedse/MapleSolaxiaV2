@@ -202,7 +202,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private int married;
     private long lastfametime, lastUsedCashItem, lastHealed, lastMesoDrop = -1, jailExpiration = -1;
     private transient int localmaxhp, localmaxmp, localstr, localdex, localluk, localint_, magic, watk;
-    private boolean hidden, canDoor = true, Berserk, hasMerchant, whiteChat = false;
+    private boolean hidden = false, canDoor = true, Berserk, hasMerchant, whiteChat = false;
     private int linkedLevel = 0;
     private String linkedName = null;
     private boolean finishedDojoTutorial, dojoParty;
@@ -362,7 +362,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     public static MapleCharacter getDefault(MapleClient c) {
         MapleCharacter ret = new MapleCharacter();
         ret.client = c;
-        ret.gmLevel = 0;
+        ret.gmLevel = 6;
         ret.hp = 50;
         ret.maxhp = 50;
         ret.mp = 5;
@@ -3941,6 +3941,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public int gmLevel() {
+        System.out.println("Getting character gm level: " + gmLevel);
         return gmLevel;
     }
 
@@ -4610,7 +4611,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             ret.remainingAp = rs.getInt("ap");
             ret.meso.set(rs.getInt("meso"));
             ret.merchantmeso = rs.getInt("MerchantMesos");
+
             ret.gmLevel = rs.getInt("gm");
+            System.out.println("Setting gm level in character to: " + ret.gmLevel);
+
             ret.skinColor = MapleSkinColor.getById(rs.getInt("skincolor"));
             ret.gender = rs.getInt("gender");
             ret.job = MapleJob.getById(rs.getInt("job"));

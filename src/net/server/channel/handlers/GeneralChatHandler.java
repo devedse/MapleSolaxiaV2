@@ -51,6 +51,8 @@ public final class GeneralChatHandler extends net.AbstractMaplePacketHandler {
                         String[] sp = s.split(" ");
                         sp[0] = sp[0].toLowerCase().substring(1);
 
+                        System.out.println("Command ding:" + sp[0]);
+
                         if(Commands.executeSolaxiaPlayerCommand(c, sp, heading)) {
                             String command = "";
                             for (String used : sp) {
